@@ -6,7 +6,8 @@ LocalStorage storage = LocalStorage("tasks");
 class TaskRepository {
   List<Task> findAll() {
     List<Task> tasks = [];
-    storage.getItem("tasks").forEach((key, value) {
+
+    storage.getItem("tasks")?.forEach((key, value) {
       tasks.add(value);
     });
     return tasks;
