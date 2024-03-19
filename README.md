@@ -1,16 +1,47 @@
-# app
+# Julius
 
-A new Flutter project.
+## Utilização
 
-## Getting Started
+1. Clone o projeto
+2. Gere o build com ``flutter run --release``. Siga as instruções de [debug via usb](#usbdebug) para instruções adicionais.
 
-This project is a starting point for a Flutter application.
+<!-- 1. Baixe o app pela [Play Store]() ou pela [release]()-->
 
-A few resources to get you started if this is your first Flutter project:
+## Desenvolvimento
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Ambiente
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter pub get
+```
+
+### Execução
+
+```sh
+flutter run
+```
+> Use <kbd>r</kbd> ou <kbd>R</kbd> para recarregar o app
+
+#### <a name="usbdebug"></a> USB debug
+
+- Caso ``flutter devices`` e ``adb devices`` aponte que o celular não possui autorização tente os comandos abaixo, desabilite o debug no celular e habilite novamente
+
+```sh
+adb kill-server
+adb start-server
+```
+
+### Testes
+
+> Gere os mocks com ``flutter pub run build_runner build``
+
+- CI
+```sh
+flutter test
+```
+
+- Testes específicos
+
+```sh
+flutter test test/blabla/blabla_test.dart
+```
