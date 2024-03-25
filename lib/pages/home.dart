@@ -15,51 +15,88 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Objetivos do dia:",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+    return Obx(
+      () => Scaffold(
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: <Widget>[
               Column(
-                children: _getTasks(),
-              )
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Objetivos do dia:",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Column(children: _getTasks()),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(26.0))),
-        onPressed: _createTask,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        ),
+        floatingActionButton: FloatingActionButton(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(26.0))),
+          onPressed: () {
+            Get.dialog(
+              AlertDialog(
+                title: const Text('Nova tarefa'),
+                content: Form(
+                  key: _controller.formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _controller.titleController,
+                        onChanged: _controller.onTitleChanged,
+                        decoration: const InputDecoration(labelText: 'Título'),
+                      ),
+                      TextField(
+                        controller: _controller.descriptionController,
+                        onChanged: _controller.onDescriptionChanged,
+                        decoration:
+                            const InputDecoration(labelText: 'Descrição'),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('Cancelar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _controller.submitCreateForm();
+                      Get.back();
+                    },
+                    child: const Text('Salvar'),
+                  ),
+                ],
+              ),
+            );
+          },
+          tooltip: 'Adicionar nova tarefa',
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
 
-  void _createTask() {
-    print("Create task");
-  }
-
   List<Widget> _getTasks() {
-    return _controller.findAll().map((task) {
-      return TaskCard(
-        task: task,
-      );
+    return _controller.tasks.map((element) {
+      return TaskCard(task: element);
     }).toList();
   }
 }
