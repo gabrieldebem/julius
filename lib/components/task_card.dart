@@ -1,5 +1,7 @@
+import 'package:app/controllers/task_card_controller.dart';
 import 'package:app/entities/task.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
@@ -10,8 +12,8 @@ class TaskCard extends StatefulWidget {
 }
 
 class TaskCardState extends State<TaskCard> {
-  bool isDone = false;
-  
+  final TaskCardController controller = Get.put(TaskCardController());
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,10 +24,12 @@ class TaskCardState extends State<TaskCard> {
         subtitle: Text(widget.task.description),
         trailing: Checkbox(
           value: widget.task.isDone,
-          onChanged: (value) => isDone = !isDone,
+          onChanged: (value) {
+            widget.task.isDone = value!;
+            controller.markTaskAsDone(widget.task);
+          },
         ),
       ),
     );
   }
-
 }
